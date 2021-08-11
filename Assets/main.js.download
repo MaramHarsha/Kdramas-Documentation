@@ -1,0 +1,54 @@
+$(document).ready(function()
+{
+
+
+
+
+
+    $('#sidebar li a[href^="#"]').bind('click.smoothscroll',function (e) {
+        e.preventDefault();
+        var target = this.hash,
+            $target = $(target);
+
+        $('html, body').stop().animate( {
+            'scrollTop': $target.offset().top-80
+        }, 600, 'swing', function () {
+            window.location.hash = "";
+        } );
+    } );
+
+
+    var $sections = $('.section');
+
+    $(window).scroll(function(){
+
+        var scrollPos = $(this).scrollTop();
+        var $currentSection
+
+
+        $sections.each(function(){
+            // divPosition is the position down the page in px of the current section we are testing
+            var sectionPos = $(this).offset().top
+
+            // If the divPosition is less the the currentScroll position the div we are testing has moved above the window edge.
+            // the -1 is so that it includes the div 1px before the div leave the top of the window.
+            if( sectionPos - scrollPos <= 200 ){
+                // We have either read the section or are currently reading the section so we'll call it our current section
+                $currentSection = $(this);
+
+                // If the next div has also been read or we are currently reading it we will overwrite this value again. This will leave us with the LAST div that passed.
+            }
+
+            // This is the bit of code that uses the currentSection as its source of ID
+            var id = $currentSection.attr('id');
+            $('li').removeClass('active');
+            //$("li a[href=#"+id+"]").parent("li").get(0).addClass('active');
+
+            $("a[href='#"+id+"']").parent("li").addClass('active');
+            console.log(id);
+
+        })
+    })
+
+});
+
